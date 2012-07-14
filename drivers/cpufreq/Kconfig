@@ -218,6 +218,14 @@ config CPU_FREQ_GOV_PERFORMANCE
 
 	  If in doubt, say Y.
 
+config CPU_FREQ_GOV_PEGASUSQ
+        tristate "'pegasusq' governor"
+	help
+
+config CPU_FREQ_GOV_ADAPTIVE
+        tristate "'adaptive' governor"
+	help
+
 config CPU_FREQ_GOV_POWERSAVE
 	tristate "'powersave' governor"
 	help
