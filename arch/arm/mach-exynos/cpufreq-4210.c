@@ -20,10 +20,11 @@
 #include <mach/regs-clock.h>
 #include <mach/cpufreq.h>
 #include <mach/asv.h>
+#include <mach/sec_debug.h>
 
 #include <plat/clock.h>
 
-#define CPUFREQ_LEVEL_END	L6
+#define CPUFREQ_LEVEL_END	L7
 
 static int max_support_idx;
 static int min_support_idx = (CPUFREQ_LEVEL_END - 1);
@@ -40,12 +41,13 @@ struct cpufreq_clkdiv {
 static unsigned int exynos4210_volt_table[CPUFREQ_LEVEL_END];
 
 static struct cpufreq_frequency_table exynos4210_freq_table[] = {
-	{L0, 1400*1000},
-	{L1, 1200*1000},
-	{L2, 1000*1000},
-	{L3, 800*1000},
-	{L4, 500*1000},
-	{L5, 200*1000},
+	{L0, 1600*1000},
+	{L1, 1400*1000},
+	{L2, 1200*1000},
+	{L3, 1000*1000},
+	{L4, 800*1000},
+	{L5, 500*1000},
+	{L6, 200*1000},
 	{0, CPUFREQ_TABLE_END},
 };
 
@@ -56,6 +58,7 @@ static struct cpufreq_clkdiv exynos4210_clkdiv_table[] = {
 	{L3, 0},
 	{L4, 0},
 	{L5, 0},
+	{L6, 0},
 };
 
 static unsigned int clkdiv_cpu0[CPUFREQ_LEVEL_END][7] = {
@@ -64,6 +67,9 @@ static unsigned int clkdiv_cpu0[CPUFREQ_LEVEL_END][7] = {
 	 * { DIVCORE, DIVCOREM0, DIVCOREM1, DIVPERIPH,
 	 *		DIVATB, DIVPCLK_DBG, DIVAPLL }
 	 */
+	/* ARM L0: 1600MHz */
+	{ 0, 3, 7, 3, 4, 1, 7 },
+	
 	/* ARM L0: 1400MHz */
 	{ 0, 3, 7, 3, 4, 1, 7 },
 
@@ -87,6 +93,9 @@ static unsigned int clkdiv_cpu1[CPUFREQ_LEVEL_END][2] = {
 	/* Clock divider value for following
 	 * { DIVCOPY, DIVHPM }
 	 */
+	/* ARM L0: 1600MHz */
+	{ 5, 0 },
+	
 	/* ARM L0: 1400MHz */
 	{ 5, 0 },
 
@@ -107,6 +116,9 @@ static unsigned int clkdiv_cpu1[CPUFREQ_LEVEL_END][2] = {
 };
 
 static unsigned int exynos4_apll_pms_table[CPUFREQ_LEVEL_END] = {
+	/* APLL FOUT L0: 1600MHz */
+	((400<<16)|(6<<8)|(0x1)),
+  
 	/* APLL FOUT L0: 1400MHz */
 	((350<<16)|(6<<8)|(0x1)),
 
@@ -142,6 +154,7 @@ static const unsigned int asv_voltage_A[CPUFREQ_LEVEL_END][8] = {
 	 */
 	{ 0, 0, 0, 0, 0, 0, 0, 0 },
 	{ 1350000, 1350000, 1300000, 1275000, 1250000, 1225000, 1200000, 1175000 },
+	{ 1350000, 1350000, 1300000, 1275000, 1250000, 1225000, 1200000, 1175000 },
 	{ 1300000, 1250000, 1200000, 1175000, 1150000, 1125000, 1100000, 1075000 },
 	{ 1200000, 1150000, 1100000, 1075000, 1050000, 1025000, 1000000, 975000 },
 	{ 1100000, 1050000, 1000000, 975000, 975000, 950000, 925000, 925000 },
@@ -159,6 +172,7 @@ static const unsigned int asv_voltage_B[CPUFREQ_LEVEL_END][5] = {
 	 * @500	 :
 	 * @200	 :
 	 */
+	{ 1350000, 1350000, 1350000, 1250000, 1225000 },
 	{ 1350000, 1350000, 1300000, 1250000, 1225000 },
 	{ 1325000, 1275000, 1225000, 1175000, 1150000 },
 	{ 1225000, 1175000, 1125000, 1075000, 1050000 },
@@ -252,6 +266,11 @@ static void exynos4210_set_frequency(unsigned int old_index,
 {
 	unsigned int tmp;
 
+	sec_debug_aux_log(SEC_DEBUG_AUXLOG_CPU_BUS_CLOCK_CHANGE,
+			"%s: old_index=%d, new_index=%d(%ps)",
+			__func__, old_index, new_index,
+			__builtin_return_address(0));
+
 	if (old_index > new_index) {
 		if (!exynos4210_pms_change(old_index, new_index)) {
 			/* 1. Change the system clock divider values */
@@ -301,8 +320,13 @@ static void __init set_volt_table(void)
 
 	switch (tmp  & (SUPPORT_FREQ_MASK << SUPPORT_FREQ_SHIFT)) {
 	case SUPPORT_1400MHZ:
+#if defined(CONFIG_EXYNOS4210_1200MHZ_SUPPORT)
+		for_1200 = true;
+		max_support_idx = L1;
+#else
 		for_1400 = true;
 		max_support_idx = L0;
+#endif
 		break;
 	case SUPPORT_1200MHZ:
 		for_1200 = true;
