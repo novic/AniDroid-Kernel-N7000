@@ -825,7 +825,10 @@ do_alignment(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
 		if (thumb2_32b)
 			handler = do_alignment_t32_to_handler(&instr, regs, &offset);
 		else
+		{
 			handler = do_alignment_ldmstm;
+			offset.un = 0;
+		}
 		break;
 
 	default:

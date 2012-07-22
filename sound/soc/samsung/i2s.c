@@ -1106,6 +1106,7 @@ static int samsung_i2s_dai_probe(struct snd_soc_dai *dai)
 
 probe_exit:
 	return 0;
+
 }
 
 static int samsung_i2s_dai_remove(struct snd_soc_dai *dai)

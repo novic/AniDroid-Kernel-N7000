@@ -292,7 +292,6 @@ wont_overwrite:
  *   sp  = stack pointer
  */
 		teq	r0, #0
-/*
 #ifndef CONFIG_CRYPTO_FIPS
 		beq	not_relocated
 #else
@@ -300,7 +299,6 @@ wont_overwrite:
         movt r5, #:upper16:zimage_ram_base_addr
         beq not_relocated_copy
 #endif
-*/
 		add	r11, r11, r0
 		add	r12, r12, r0
 
@@ -312,13 +310,12 @@ wont_overwrite:
 		 */
 		add	r2, r2, r0
 		add	r3, r3, r0
-/*
+
 #ifdef CONFIG_CRYPTO_FIPS
         movw r5, #:lower16:zimage_ram_base_addr
         movt r5, #:upper16:zimage_ram_base_addr
         bl copy_compressed
 #endif
-*/
 		/*
 		 * Relocate all entries in the GOT table.
 		 */

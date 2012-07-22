@@ -123,7 +123,7 @@ int wacom_i2c_load_fw(struct i2c_client *client)
 
 int wacom_i2c_firm_update(struct wacom_i2c *wac_i2c)
 {
-	int ret;
+	int ret = 0;
 	int retry = 3;
 	const struct firmware *firm_data = NULL;
 
