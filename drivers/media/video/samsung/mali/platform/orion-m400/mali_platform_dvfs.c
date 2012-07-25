@@ -83,18 +83,18 @@ mali_dvfs_table mali_dvfs[MALI_DVFS_STEPS]={
 			/* more pixels to push and bigger battery */
 			/*step 0*/{100  ,1000000    , 950000},
 			/*step 1*/{160  ,1000000    , 950000},
-			/*step 2*/{267  ,1000000    ,1000000},
+			/*step 2*/{400  ,1000000    ,1000000},
 #elif defined(CONFIG_MACH_PX)
 			/* exynos tablets have much bigger battery
 			 * and more pixels, so we shift our table down
 			 */
 			/*step 0*/{160  ,1000000    , 950000},
 			/*step 1*/{267  ,1000000    ,1000000},
-			/*step 2*/{300  ,1000000    ,1100000},
+			/*step 2*/{400  ,1000000    ,1100000},
 #else
 			/*step 0*/{66   ,1000000    , 925000},
 			/*step 1*/{160  ,1000000    , 950000},
-			/*step 2*/{267  ,1000000    ,1000000},
+			/*step 2*/{400  ,1000000    ,1000000},
 #endif
 };
 
@@ -105,7 +105,7 @@ mali_dvfs_table mali_dvfs[MALI_DVFS_STEPS]={
 #define ASV_LEVEL_SUPPORT 0
 #if defined(CONFIG_MACH_Q1_BD)
 static unsigned int asv_3d_volt_5_table[ASV_5_LEVEL][MALI_DVFS_STEPS] = {
-	/* L3 (100MHz) L2(160MHz), L1(267MHz) */
+	/* L3 (100MHz) L2(160MHz), L1(400MHz) */
         {1000000, 1000000, 1100000},	/* S */
 	{1000000, 1000000, 1100000},	/* A */
 	{ 950000,  950000, 1000000},	/* B */
@@ -114,7 +114,7 @@ static unsigned int asv_3d_volt_5_table[ASV_5_LEVEL][MALI_DVFS_STEPS] = {
 };
 
 static unsigned int asv_3d_volt_8_table[ASV_8_LEVEL][MALI_DVFS_STEPS] = {
-	/* L3 (100MHz) L2(160MHz), L1(267MHz) */
+	/* L3 (100MHz) L2(160MHz), L1(400MHz) */
         {1000000, 1000000, 1100000},	/* SS */
 	{1000000, 1000000, 1100000},	/* A1 */
 	{1000000, 1000000, 1100000},	/* A2 */
@@ -126,7 +126,7 @@ static unsigned int asv_3d_volt_8_table[ASV_8_LEVEL][MALI_DVFS_STEPS] = {
 };
 #elif defined(CONFIG_MACH_PX)
 static unsigned int asv_3d_volt_5_table[ASV_5_LEVEL][MALI_DVFS_STEPS] = {
-	/* L3 (160MHz) L2(267MHz), L1(300MHz) */
+	/* L3 (160MHz) L2(267MHz), L1(400MHz) */
 	{1000000, 1100000, 1150000},	/* S */
 	{1000000, 1100000, 1150000},	/* A */
 	{ 950000, 1000000, 1100000},	/* B */
@@ -135,7 +135,7 @@ static unsigned int asv_3d_volt_5_table[ASV_5_LEVEL][MALI_DVFS_STEPS] = {
 };
 
 static unsigned int asv_3d_volt_8_table[ASV_8_LEVEL][MALI_DVFS_STEPS] = {
-	/* L3 (160MHz) L2(267MHz), L1(300MHz) */
+	/* L3 (160MHz) L2(267MHz), L1(400MHz) */
 	{1000000, 1100000, 1150000},	/* SS */
 	{1000000, 1100000, 1150000},	/* A1 */
 	{1000000, 1100000, 1150000},	/* A2 */
@@ -147,7 +147,7 @@ static unsigned int asv_3d_volt_8_table[ASV_8_LEVEL][MALI_DVFS_STEPS] = {
 };
 #else
 static unsigned int asv_3d_volt_5_table[ASV_5_LEVEL][MALI_DVFS_STEPS] = {
-	/* L3 (66MHz) L2(160MHz), L1(267MHz) */
+	/* L3 (66MHz) L2(160MHz), L1(400MHz) */
         { 975000, 1000000, 1100000},	/* S */
 	{ 975000, 1000000, 1100000},	/* A */
 	{ 925000,  950000, 1000000},	/* B */
@@ -156,7 +156,7 @@ static unsigned int asv_3d_volt_5_table[ASV_5_LEVEL][MALI_DVFS_STEPS] = {
 };
 
 static unsigned int asv_3d_volt_8_table[ASV_8_LEVEL][MALI_DVFS_STEPS] = {
-	/* L3 (66MHz) L2(160MHz), L1(267MHz) */
+	/* L3 (66MHz) L2(160MHz), L1(400MHz) */
         { 975000, 1000000, 1100000},	/* SS */
 	{ 975000, 1000000, 1100000},	/* A1 */
 	{ 975000, 1000000, 1100000},	/* A2 */
